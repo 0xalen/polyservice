@@ -1,0 +1,6 @@
+.idea/
+venv/
+Pipfile
+Pipfile
+__pycache__/
+settings.py
