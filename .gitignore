@@ -1,6 +1,6 @@
 .idea/
 venv/
 Pipfile
-Pipfile
+Pipfile.lock
 __pycache__/
 settings.py
