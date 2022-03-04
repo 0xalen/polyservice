@@ -23,10 +23,13 @@ PHONE_NUMBER_2 = "+1100200302"
 SERVICE_AREA = "Service area"
 SERVICE_AREA_1 = "Service area 1"
 SERVICE_AREA_2 = "Service area 2"
+SERVICE_AREA_3 = "Service area 3"
 PRICE_1 = Decimal('01.05')
 PRICE_2 = Decimal('02.15')
+PRICE_3 = Decimal('03.30')
 POLYGON_1 = Polygon(((1, 0), (2, 2), (2, 0), (1, 0)), ((0.5, 0), (1.5, 0.5), (0.5, 0.5), (0.5, 0)))
 POLYGON_2 = Polygon(((5, 0), (3, 2), (3, 4), (5, 0)), ((4.5, 0), (2.5, 0.5), (2.5, 0.5), (4.5, 0)))
+POLYGON_3 = Polygon(((6, 0), (7, 2), (6, 4), (6, 0)), ((5.5, 5), (3.5, 3.5), (4.5, 3.5), (5.5, 5)))
 API_USER = "apiuser"
 API_USER_PASSWORD = "password"
 

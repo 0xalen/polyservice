@@ -11,7 +11,7 @@ class TestProvidersUrls(TestProvidersUrlsBase):
         python manage.py test apps.providers.tests.urls.TestProvidersUrls --keepdb
     """
 
-    def test_url_url_provider_detail_resolves_to_view(self):
+    def test_url_provider_detail_resolves_to_view(self):
         url = self.url_provider_detail
         self.assertEqual(resolve(url).func.view_class, views.ProviderInformationView)
 
@@ -27,6 +27,26 @@ class TestProvidersUrls(TestProvidersUrlsBase):
         url = self.url_provider_create
         self.assertEqual(resolve(url).func.view_class, views.ProviderInformationView)
 
-    def test_url_get_provider_list_resolves_to_view(self):
+    def test_url_provider_list_resolves_to_view(self):
         url = self.url_provider_list
         self.assertEqual(resolve(url).func.view_class, views.ProviderListView)
+
+    def test_url_service_area_detail_resolves_to_view(self):
+        url = self.url_service_area_detail
+        self.assertEqual(resolve(url).func.view_class, views.ServiceAreaInformationView)
+
+    def test_url_service_area_delete_resolves_to_view(self):
+        url = self.url_service_area_delete
+        self.assertEqual(resolve(url).func.view_class, views.ServiceAreaInformationView)
+
+    def test_url_service_area_update_resolves_to_view(self):
+        url = self.url_service_area_update
+        self.assertEqual(resolve(url).func.view_class, views.ServiceAreaInformationView)
+
+    def test_url_service_area_create_resolves_to_view(self):
+        url = self.url_service_area_create
+        self.assertEqual(resolve(url).func.view_class, views.ServiceAreaInformationView)
+
+    def test_url_service_area_list_resolves_to_view(self):
+        url = self.url_service_area_list
+        self.assertEqual(resolve(url).func.view_class, views.ServiceAreaListView)

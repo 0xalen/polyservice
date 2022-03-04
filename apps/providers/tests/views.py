@@ -12,7 +12,7 @@ from apps.providers.tests.data import *
 from apps.providers.tests.models import TestModelsBase
 
 
-class TestProvidersBase(TestProvidersUrlsBase):
+class TestViewsBase(TestProvidersUrlsBase):
 
     @classmethod
     def setUpTestData(cls):
@@ -28,7 +28,7 @@ class TestProvidersBase(TestProvidersUrlsBase):
         User.objects.create_user(username=API_USER, password=API_USER_PASSWORD)
 
 
-class TestProviderInformationView(TestProvidersBase):
+class TestProviderInformationView(TestViewsBase):
     """
     Class for testing ProviderInformationView.
     Run:
@@ -164,7 +164,7 @@ class TestProviderInformationView(TestProvidersBase):
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
 
-class TestProviderListView(TestProvidersBase):
+class TestProviderListView(TestViewsBase):
     """
     Class for testing ProviderListView.
     Run:
@@ -186,7 +186,13 @@ class TestProviderListView(TestProvidersBase):
 
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
 
-    def test_get_all_providers_authenticated_receives_data(self):
+    def test_get_all_providers_authenticated_GET_response_ok(self):
+        self.client.login(username=API_USER, password=API_USER_PASSWORD)
+        response = self.client.get(self.url_provider_list)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+    def test_get_all_providers_authenticated_GET_receives_data(self):
         self.client.login(username=API_USER, password=API_USER_PASSWORD)
         provider_list = Provider.objects.all()
         provider_serializer = ProviderSerializer(provider_list, many=True)
@@ -194,4 +200,111 @@ class TestProviderListView(TestProvidersBase):
 
         self.assertEqual(response.data, provider_serializer.data)
 
+    def test_get_all_providers_authenticated_GET_empty_list_receives_data(self):
+        self.client.login(username=API_USER, password=API_USER_PASSWORD)
+        provider_list = Provider.objects.all()
+        provider_list.delete()
 
+        provider_serializer = ProviderSerializer(provider_list, many=True)
+        response = self.client.get(self.url_provider_list)
+
+        self.assertEqual(response.data, provider_serializer.data)
+
+
+class TestServiceAreaBase(TestViewsBase):
+
+    @classmethod
+    def setUpTestData(cls):
+        super().setUpTestData()
+        cls.__setUpProviders()
+
+    @classmethod
+    def __setUpProviders(cls):
+        cls.provider_1 = Provider.objects.create(
+            name=PROVIDER_1,
+            email=EMAIL_1,
+            phone=PHONE_NUMBER_1,
+            language=LANGUAGE_1,
+            currency=CURRENCY_1,
+        )
+        cls.provider_2 = Provider.objects.create(
+            name=PROVIDER_2,
+            email=EMAIL_2,
+            phone=PHONE_NUMBER_2,
+            language=LANGUAGE_2,
+            currency=CURRENCY_1,
+        )
+
+
+class TestServiceAreaInformation(TestServiceAreaBase):
+    """
+    Class for testing TestServiceAreaInformation.
+    Run:
+        python manage.py test apps.providers.tests.views.TestServiceAreaInformation --keepdb
+    """
+
+    def setUp(self):
+        self.service_area_1 = ServiceArea.objects.create(
+            provider=self.provider_1,
+            name=SERVICE_AREA_1,
+            price=PRICE_1,
+            polygon=POLYGON_1,
+        )
+        self.service_area_2 = ServiceArea.objects.create(
+            provider=self.provider_1,
+            name=SERVICE_AREA_2,
+            price=PRICE_2,
+            polygon=POLYGON_2,
+        )
+        self.service_area_3 = ServiceArea.objects.create(
+            provider=self.provider_2,
+            name=SERVICE_AREA_3,
+            price=PRICE_3,
+            polygon=POLYGON_3,
+        )
+
+
+class TestServiceAreaListView(TestServiceAreaBase):
+    """
+    Class for testing ServiceAreaListView.
+    Run:
+        python manage.py test apps.providers.tests.views.TestServiceAreaListView
+    """
+
+    def setUp(self):
+        for i in range(10):
+            ServiceArea.objects.create(
+                provider=self.provider_1,
+                name=SERVICE_AREA_3,
+                price=PRICE_3,
+                polygon=POLYGON_3,
+            )
+
+    def test_get_all_service_areas_unauthenticated_GET_response_forbidden(self):
+        response = self.client.get(self.url_service_area_list)
+
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+
+    def test_get_all_service_areas_authenticated_GET_response_ok(self):
+        self.client.login(username=API_USER, password=API_USER_PASSWORD)
+        response = self.client.get(self.url_service_area_list)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+    def test_get_all_service_areas_authenticated_GET_receives_data(self):
+        self.client.login(username=API_USER, password=API_USER_PASSWORD)
+        service_area_list = ServiceArea.objects.all()
+        service_area_serializer = ServiceAreaSerializer(service_area_list, many=True)
+        response = self.client.get(self.url_service_area_list)
+
+        self.assertEqual(response.data, service_area_serializer.data)
+
+    def test_get_all_service_areas_authenticated_GET_empty_list_receives_data(self):
+        self.client.login(username=API_USER, password=API_USER_PASSWORD)
+        service_area_list = ServiceArea.objects.all()
+        service_area_list.delete()
+
+        service_area_serializer = ServiceAreaSerializer(service_area_list, many=True)
+        response = self.client.get(self.url_service_area_list)
+
+        self.assertEqual(response.data, service_area_serializer.data)

@@ -11,7 +11,7 @@ from apps.providers.serializers import ProviderSerializer, ServiceAreaSerializer
 
 class ProviderInformationView(APIView):
     """
-    Class in charge of handling operations related particular instances of the Provider modal in the API.
+    Class in charge of handling operations related particular instances of the Provider model in the API.
     """
     authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
     permission_classes = [IsAuthenticated]
@@ -69,19 +69,16 @@ class ProviderInformationView(APIView):
 
 class ProviderListView(APIView):
     """
-    Class in charge of handling operations related to group of instances of the Provider modal in the API.
+    Class in charge of handling operations related to group of instances of the Provider model in the API.
     """
     authentication_classes = [SessionAuthentication, BasicAuthentication]
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
         provider_list = Provider.objects.all().order_by('name')
-        if not provider_list.exists():
-            return Response(status=status.HTTP_404_NOT_FOUND)
-
         serialized_provider_list = ProviderSerializer(provider_list, many=True)
-        provider_list_data = serialized_provider_list.data
-        return Response(provider_list_data)
+
+        return Response(serialized_provider_list.data, status=status.HTTP_200_OK)
 
 
 class ServiceAreaInformationView(APIView):
@@ -89,4 +86,15 @@ class ServiceAreaInformationView(APIView):
 
 
 class ServiceAreaListView(APIView):
-    pass
+    """
+        Class in charge of handling operations related to group of instances of the ServiceArea model in the API.
+        """
+    authentication_classes = [SessionAuthentication, BasicAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        service_area_list = ServiceArea.objects.all().order_by('name')
+        serialized_service_area_list = ServiceAreaSerializer(service_area_list, many=True)
+
+        return Response(serialized_service_area_list.data, status=status.HTTP_200_OK)
+
