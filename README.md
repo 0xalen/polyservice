@@ -1,6 +1,6 @@
 # PolyService API
 
-Author: Alejandro Trinidad
+Author: Alejandro Trinidad <0xalen@disroot.org>
 
 ## DESCRIPCIÓN:
 
