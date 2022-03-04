@@ -165,13 +165,16 @@ class FindServiceAreasView(APIView):
 
     def post(self, request):
         location_data = request.data
-        location = Point(location_data.get('lon'), location_data.get('lat'))
+        location = Point(
+            location_data.get('lon'),
+            location_data.get('lat'),
+        )
 
         # TODO -> Review query
         service_area_list_by_location = ServiceArea.objects.filter(
             polygon__contains=location
         ).order_by('provider')
-
+        
         serialized_service_area_list = ServiceAreaSerializer(service_area_list_by_location, many=True)
         return Response(serialized_service_area_list.data, status=status.HTTP_200_OK)
 

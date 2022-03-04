@@ -39,8 +39,8 @@ POLYGON_3 = Polygon(
     ((6, 0), (7, 2), (6, 4), (6, 0)),
     ((5.5, 5), (3.5, 3.5), (4.5, 3.5), (5.5, 5))
 )
-LON_1 = 6.0
-LAT_1 = 5.5
+LON_1 = 2.0
+LAT_1 = 2.0
 
 API_USER = "apiuser"
 API_USER_PASSWORD = "password"
