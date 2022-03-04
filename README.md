@@ -1,5 +1,7 @@
 # PolyService API
 
+Author: Alejandro Trinidad
+
 ## DESCRIPCIÓN:
 
 API to allow transportation suppliers to add their service areas as polygons. 
@@ -21,4 +23,12 @@ postgres=# CREATE EXTENSION postgis;
 CREATE EXTENSION
 ```
 
+## DOCUMENTATION
+The schema to generate documentation is available at: /api/schema/
+
+There are 2 links available to view the documentation:
+- /api/schema/swagger-ui
+- /api/schema/redoc
  
+
+
