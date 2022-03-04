@@ -38,7 +38,8 @@ class ProviderInformationView(APIView):
         except Provider.DoesNotExist:
             return Response(status=status.HTTP_404_NOT_FOUND)
 
-        return Response({})
+        provider.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
     def put(self, request, pk: int):
         """
@@ -49,23 +50,21 @@ class ProviderInformationView(APIView):
         except Provider.DoesNotExist:
             return Response(status=status.HTTP_404_NOT_FOUND)
 
-        try:
-            provider_data = request.PUT.get('data')
-            serialized_provider = ProviderSerializer(provider_data)
-        except Provider.DoesNotExist:
-            return Response(status=status.HTTP_400_BAD_REQUEST)
+        provider_data = request.data
+        serialized_provider = ProviderSerializer(provider, data=provider_data)
+        if not serialized_provider.is_valid():
+            return Response(serialized_provider.errors, status=status.HTTP_400_BAD_REQUEST)
 
-        provider.updated_at()
-        return Response({})
+        return Response(serialized_provider.data, status=status.HTTP_204_NO_CONTENT)
 
     def post(self, request):
         provider_data = request.data
         serialized_provider = ProviderSerializer(data=provider_data)
         if not serialized_provider.is_valid():
-            return Response(status=status.HTTP_400_BAD_REQUEST)
+            return Response(serialized_provider.errors, status=status.HTTP_400_BAD_REQUEST)
 
         serialized_provider.save()
-        return Response(status=status.HTTP_201_CREATED)
+        return Response(serialized_provider.data, status=status.HTTP_201_CREATED)
 
 
 class ProviderListView(APIView):

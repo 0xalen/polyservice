@@ -8,6 +8,7 @@ Dataset for testing. Centralized here in order to standardize attributes of crea
 """
 
 ID_1 = 1
+INVALID_OBJECT_ID = 0
 PROVIDER = "Provider"
 PROVIDER_1 = "Provider 1"
 PROVIDER_2 = "Provider 2"
