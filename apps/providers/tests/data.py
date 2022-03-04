@@ -38,9 +38,14 @@ class TestProvidersUrlsBase(TestCase):
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
-        cls.url_get_provider_detail = reverse('providers:provider_detail', kwargs={'pk': ID_1})
-        cls.url_update_provider_information = reverse('providers:provider_update', kwargs={'pk': ID_1})
-        cls.url_delete_provider = reverse('providers:provider_delete', kwargs={'pk': ID_1})
-        cls.url_create_provider = reverse('providers:provider_creation')
-        cls.url_get_provider_list = reverse('providers:provider_list')
+        cls.url_provider_detail = reverse('providers:provider_detail', kwargs={'pk': ID_1})
+        cls.url_provider_update = reverse('providers:provider_update', kwargs={'pk': ID_1})
+        cls.url_provider_delete = reverse('providers:provider_delete', kwargs={'pk': ID_1})
+        cls.url_provider_create = reverse('providers:provider_create')
+        cls.url_provider_list = reverse('providers:provider_list')
 
+        cls.url_service_area_detail = reverse('providers:service_area_detail', kwargs={'pk': ID_1})
+        cls.url_service_area_delete = reverse('providers:service_area_delete', kwargs={'pk': ID_1})
+        cls.url_service_area_update = reverse('providers:service_area_update', kwargs={'pk': ID_1})
+        cls.url_service_area_create = reverse('providers:service_area_create')
+        cls.url_service_area_list = reverse('providers:service_area_list')

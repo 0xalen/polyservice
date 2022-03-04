@@ -11,22 +11,22 @@ class TestProvidersUrls(TestProvidersUrlsBase):
         python manage.py test apps.providers.tests.urls.TestProvidersUrls --keepdb
     """
 
-    def test_url_get_provider_information_resolves_to_view(self):
-        url = self.url_get_provider_detail
+    def test_url_url_provider_detail_resolves_to_view(self):
+        url = self.url_provider_detail
         self.assertEqual(resolve(url).func.view_class, views.ProviderInformationView)
 
-    def test_url_update_provider_information_resolves_to_view(self):
-        url = self.url_update_provider_information
+    def test_url_provider_update_information_resolves_to_view(self):
+        url = self.url_provider_update
         self.assertEqual(resolve(url).func.view_class, views.ProviderInformationView)
 
     def test_url_delete_provider_resolves_to_view(self):
-        url = self.url_delete_provider
+        url = self.url_provider_delete
         self.assertEqual(resolve(url).func.view_class, views.ProviderInformationView)
 
     def test_url_create_provider_resolves_to_view(self):
-        url = self.url_create_provider
+        url = self.url_provider_create
         self.assertEqual(resolve(url).func.view_class, views.ProviderInformationView)
 
     def test_url_get_provider_list_resolves_to_view(self):
-        url = self.url_get_provider_list
+        url = self.url_provider_list
         self.assertEqual(resolve(url).func.view_class, views.ProviderListView)

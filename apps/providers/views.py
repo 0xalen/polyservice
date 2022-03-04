@@ -83,3 +83,10 @@ class ProviderListView(APIView):
         provider_list_data = serialized_provider_list.data
         return Response(provider_list_data)
 
+
+class ServiceAreaInformationView(APIView):
+    pass
+
+
+class ServiceAreaListView(APIView):
+    pass
