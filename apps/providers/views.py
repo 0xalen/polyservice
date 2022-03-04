@@ -8,7 +8,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status, permissions
 from apps.providers.models import Provider, ServiceArea
-from apps.providers.serializers import ProviderSerializer, ServiceAreaSerializer
+from apps.providers.serializers import ProviderSerializer, ServiceAreaSerializer, ServiceAreaGeoSerializer
 
 
 class ProviderInformationView(APIView):
@@ -151,7 +151,8 @@ class ServiceAreaListView(APIView):
 
     def get(self, request):
         service_area_list = ServiceArea.objects.all().order_by('name')
-        serialized_service_area_list = ServiceAreaSerializer(service_area_list, many=True)
+        #serialized_service_area_list = ServiceAreaSerializer(service_area_list, many=True)
+        serialized_service_area_list = ServiceAreaGeoSerializer(service_area_list, many=True)
 
         return Response(serialized_service_area_list.data, status=status.HTTP_200_OK)
 

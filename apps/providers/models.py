@@ -30,7 +30,7 @@ class ServiceArea(models.Model):
     provider = models.ForeignKey(Provider, models.DO_NOTHING, db_column='provider', blank=True, null=True)
     name = models.CharField(max_length=128, validators=[ALPHANUMERIC_EXTENDED, ])
     price = MoneyField(max_digits=19, decimal_places=4, default_currency='USD')
-    polygon = models.PolygonField(srid=4326)
+    polygon = models.PolygonField(geography=True, srid=4326)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

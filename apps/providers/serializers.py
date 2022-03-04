@@ -2,6 +2,8 @@ import json
 from decimal import Decimal
 from unicodedata import decimal
 
+import simplejson
+from django.contrib.gis.forms import PolygonField
 from django.contrib.gis.geos import Polygon
 from django.core.serializers import serialize
 from django.core.signing import JSONSerializer
@@ -29,7 +31,13 @@ class DecimalSerializer(JSONSerializer):
 
 
 class ServiceAreaSerializer(serializers.ModelSerializer):
-    # provider = ProviderSerializer()
+    """
+    Serialization of ServiceArea Models.
+    'provider' field is serialized as an IntegerField instead of using ProviderSerializer because of depth restrictions
+    in the creation of nested objects.
+    In this way, it's essentially a read-only field:
+        provider = ProviderSerializer() -> provider = IntegerField()
+    """
     provider = IntegerField()
     polygon = Polygon.json
     price = DecimalSerializer()
@@ -39,4 +47,20 @@ class ServiceAreaSerializer(serializers.ModelSerializer):
         depth = 1
         fields = ('provider', 'name', 'price', 'polygon')
 
+
+class ServiceAreaGeoSerializer(GeoFeatureModelSerializer):
+    provider = IntegerField()
+    price = DecimalSerializer()
+    polygon = serialize(
+        'geojson',
+        ServiceArea.objects.all(),
+        geometry_field='polygon',
+        fields=('polygon',)
+    )
+
+    class Meta:
+        model = ServiceArea
+        depth = 2
+        fields = ('provider', 'name', 'price', 'polygon')
+        geo_field = "polygon"
 
