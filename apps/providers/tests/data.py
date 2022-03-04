@@ -27,9 +27,21 @@ SERVICE_AREA_3 = "Service area 3"
 PRICE_1 = Decimal('01.05')
 PRICE_2 = Decimal('02.15')
 PRICE_3 = Decimal('03.30')
-POLYGON_1 = Polygon(((1, 0), (2, 2), (2, 0), (1, 0)), ((0.5, 0), (1.5, 0.5), (0.5, 0.5), (0.5, 0)))
-POLYGON_2 = Polygon(((5, 0), (3, 2), (3, 4), (5, 0)), ((4.5, 0), (2.5, 0.5), (2.5, 0.5), (4.5, 0)))
-POLYGON_3 = Polygon(((6, 0), (7, 2), (6, 4), (6, 0)), ((5.5, 5), (3.5, 3.5), (4.5, 3.5), (5.5, 5)))
+POLYGON_1 = Polygon(
+    ((1, 0), (2, 2), (2, 0), (1, 0)),
+    ((0.5, 0), (1.5, 0.5), (0.5, 0.5), (0.5, 0))
+)
+POLYGON_2 = Polygon(
+    ((5, 0), (3, 2), (3, 4), (5, 0)),
+    ((4.5, 0), (2.5, 0.5), (2.5, 0.5), (4.5, 0))
+)
+POLYGON_3 = Polygon(
+    ((6, 0), (7, 2), (6, 4), (6, 0)),
+    ((5.5, 5), (3.5, 3.5), (4.5, 3.5), (5.5, 5))
+)
+LON_1 = 6.0
+LAT_1 = 5.5
+
 API_USER = "apiuser"
 API_USER_PASSWORD = "password"
 
@@ -52,3 +64,5 @@ class TestProvidersUrlsBase(TestCase):
         cls.url_service_area_update = reverse('providers:service_area_update', kwargs={'pk': ID_1})
         cls.url_service_area_create = reverse('providers:service_area_create')
         cls.url_service_area_list = reverse('providers:service_area_list')
+
+        cls.url_find_service_areas = reverse('providers:find_service_areas')

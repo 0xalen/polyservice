@@ -50,3 +50,7 @@ class TestProvidersUrls(TestProvidersUrlsBase):
     def test_url_service_area_list_resolves_to_view(self):
         url = self.url_service_area_list
         self.assertEqual(resolve(url).func.view_class, views.ServiceAreaListView)
+
+    def test_url_find_service_areas_resolves_to_view(self):
+        url = self.url_find_service_areas
+        self.assertEqual(resolve(url).func.view_class, views.FindServiceAreasView)

@@ -1,3 +1,5 @@
+from django.contrib.gis.geos import Polygon, Point
+from django.db.models import Func
 from rest_framework.authentication import SessionAuthentication, BasicAuthentication, TokenAuthentication
 from rest_framework.decorators import api_view
 from rest_framework.permissions import AllowAny, IsAuthenticated
@@ -142,8 +144,8 @@ class ServiceAreaInformationView(APIView):
 
 class ServiceAreaListView(APIView):
     """
-        Class in charge of handling operations related to group of instances of the ServiceArea model in the API.
-        """
+    Class in charge of handling operations related to group of instances of the ServiceArea model in the API.
+    """
     authentication_classes = [SessionAuthentication, BasicAuthentication]
     permission_classes = [IsAuthenticated]
 
@@ -151,5 +153,25 @@ class ServiceAreaListView(APIView):
         service_area_list = ServiceArea.objects.all().order_by('name')
         serialized_service_area_list = ServiceAreaSerializer(service_area_list, many=True)
 
+        return Response(serialized_service_area_list.data, status=status.HTTP_200_OK)
+
+
+class FindServiceAreasView(APIView):
+    """
+    Class in charge of handling queries of involving ServiceAreas in the API.
+    """
+    authentication_classes = [SessionAuthentication, BasicAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        location_data = request.data
+        location = Point(location_data.get('lon'), location_data.get('lat'))
+
+        # TODO -> Review query
+        service_area_list_by_location = ServiceArea.objects.filter(
+            polygon__contains=location
+        ).order_by('provider')
+
+        serialized_service_area_list = ServiceAreaSerializer(service_area_list_by_location, many=True)
         return Response(serialized_service_area_list.data, status=status.HTTP_200_OK)
 

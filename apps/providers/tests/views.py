@@ -421,3 +421,66 @@ class TestServiceAreaListView(TestServiceAreaBase):
         response = self.client.get(self.url_service_area_list)
 
         self.assertEqual(response.data, service_area_serializer.data)
+
+
+class TestFindServiceAreasView(TestServiceAreaListView):
+    """
+    Class for testing FindServiceAreasView.
+    Run:
+        python manage.py test apps.providers.tests.views.TestFindServiceAreasView
+    """
+    def setUp(self):
+        super().setUp()
+        self.valid_location = {
+            'lon': LON_1,
+            'lat': LAT_1,
+        }
+        self.invalid_location = {
+            'lon': None,
+            'lat': LAT_1,
+        }
+
+    def test_find_service_areas_unauthenticated_POST_response_forbidden(self):
+        response = self.client.post(self.url_find_service_areas)
+
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+
+    def test_find_service_areas_authenticated_GET_response_not_allowed(self):
+        self.client.login(username=API_USER, password=API_USER_PASSWORD)
+        response = self.client.get(self.url_find_service_areas)
+
+        self.assertEqual(response.status_code, status.HTTP_405_METHOD_NOT_ALLOWED)
+
+    def test_find_service_areas_authenticated_POST_response_ok(self):
+        self.client.login(username=API_USER, password=API_USER_PASSWORD)
+        response = self.client.post(self.url_find_service_areas)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+    def test_find_service_areas_authenticated_POST_receives_data(self):
+        self.client.login(username=API_USER, password=API_USER_PASSWORD)
+        service_area_list = []
+
+        service_area_serializer = ServiceAreaSerializer(service_area_list, many=True)
+        valid_location_data = json.dumps(self.valid_location)
+
+        response = self.client.post(
+            self.url_find_service_areas,
+            data=valid_location_data,
+            content_type='application/json',
+            )
+
+        self.assertEqual(response.data, service_area_serializer.data)
+
+    '''
+    def test_find_service_areas_authenticated_GET_empty_list_receives_data(self):
+        self.client.login(username=API_USER, password=API_USER_PASSWORD)
+        service_area_list = ServiceArea.objects.all()
+        service_area_list.delete()
+
+        service_area_serializer = ServiceAreaSerializer(service_area_list, many=True)
+        response = self.client.get(self.url_find_service_areas)
+
+        self.assertEqual(response.data, service_area_serializer.data)
+    '''
+

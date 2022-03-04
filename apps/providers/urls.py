@@ -14,4 +14,6 @@ urlpatterns = [
     path('provider/service_area/update/<int:pk>', views.ServiceAreaInformationView.as_view(), name='service_area_update'),
     path('provider/service_area/create', views.ServiceAreaInformationView.as_view(), name='service_area_create'),
     path('provider/service_area/list', views.ServiceAreaListView.as_view(), name='service_area_list'),
+
+    path('service_area/', views.FindServiceAreasView.as_view(), name='find_service_areas'),
 ]
