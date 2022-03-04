@@ -82,7 +82,62 @@ class ProviderListView(APIView):
 
 
 class ServiceAreaInformationView(APIView):
-    pass
+    """
+        Class in charge of handling operations related particular instances of the ServiceArea model in the API.
+        """
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, pk: int):
+        """
+        Get details from a particular service area.
+        """
+        try:
+            service_area = ServiceArea.objects.get(pk=pk)
+        except ServiceArea.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+
+        serialized_service_area = ServiceAreaSerializer(service_area)
+        service_area_detail_data = serialized_service_area.data
+        return Response(service_area_detail_data)
+
+    def delete(self, request, pk: int):
+        """
+        Delete a service area.
+        """
+        try:
+            service_area = ServiceArea.objects.get(pk=pk)
+        except ServiceArea.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+
+        service_area.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+    def put(self, request, pk: int):
+        """
+        Update information about a particular service area.
+        """
+        try:
+            service_area = ServiceArea.objects.get(pk=pk)
+        except ServiceArea.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+
+        service_area_data = request.data
+        serialized_service_area = ServiceAreaSerializer(service_area, data=service_area_data)
+        if not serialized_service_area.is_valid():
+            return Response(serialized_service_area.errors, status=status.HTTP_400_BAD_REQUEST)
+
+        return Response(serialized_service_area.data, status=status.HTTP_204_NO_CONTENT)
+
+    def post(self, request):
+        service_area_data = request.data
+
+        serialized_service_area = ServiceAreaSerializer(data=service_area_data)
+        if not serialized_service_area.is_valid():
+            return Response(serialized_service_area.errors, status=status.HTTP_400_BAD_REQUEST)
+
+        serialized_service_area.save()
+        return Response(serialized_service_area.data, status=status.HTTP_201_CREATED)
 
 
 class ServiceAreaListView(APIView):

@@ -1,4 +1,5 @@
 import json
+import simplejson
 # from rest_framework.authtoken.admin import User
 from django.contrib import auth
 from django.contrib.auth.models import User
@@ -6,6 +7,7 @@ from rest_framework import status
 from django.test import TestCase, Client
 from django.urls import reverse
 
+from apps.providers.encoders import DecimalEncoder
 from apps.providers.models import Provider, ServiceArea
 from apps.providers.serializers import ProviderSerializer, ServiceAreaSerializer
 from apps.providers.tests.data import *
@@ -236,11 +238,11 @@ class TestServiceAreaBase(TestViewsBase):
         )
 
 
-class TestServiceAreaInformation(TestServiceAreaBase):
+class TestServiceAreaInformationView(TestServiceAreaBase):
     """
-    Class for testing TestServiceAreaInformation.
+    Class for testing TestServiceAreaInformationView.
     Run:
-        python manage.py test apps.providers.tests.views.TestServiceAreaInformation --keepdb
+        python manage.py test apps.providers.tests.views.TestServiceAreaInformationView --keepdb
     """
 
     def setUp(self):
@@ -250,18 +252,129 @@ class TestServiceAreaInformation(TestServiceAreaBase):
             price=PRICE_1,
             polygon=POLYGON_1,
         )
+        self.TEST_ID_1 = self.service_area_1.id
         self.service_area_2 = ServiceArea.objects.create(
             provider=self.provider_1,
             name=SERVICE_AREA_2,
             price=PRICE_2,
             polygon=POLYGON_2,
         )
+        self.TEST_ID_2 = self.service_area_2.id
         self.service_area_3 = ServiceArea.objects.create(
             provider=self.provider_2,
             name=SERVICE_AREA_3,
             price=PRICE_3,
             polygon=POLYGON_3,
         )
+        self.TEST_ID_3 = self.service_area_3.id
+
+        self.valid_service_area_data = {
+            'provider': ProviderSerializer(self.provider_1).data,
+            'name': "Valid service area",
+            'price': simplejson.dumps(PRICE_1, use_decimal=True),
+            'polygon': POLYGON_1.json
+        }
+        self.valid_service_area_data_2 = {
+            'provider': ProviderSerializer(self.provider_1).data,
+            'name': "Valid service area 2",
+            'price': simplejson.dumps(PRICE_2, use_decimal=True),
+            'polygon': POLYGON_2.json
+        }
+        self.invalid_service_area_data = {
+            'provider': ProviderSerializer(self.provider_2).data,
+            'name': "Valid service area",
+            'price': None,
+            'polygon': POLYGON_1.json
+        }
+
+    def test_service_area_detail_unauthenticated_GET_response_forbidden(self):
+        response = self.client.get(self.url_service_area_detail)
+
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+
+    def test_service_area_detail_authenticated_GET_response_ok(self):
+        self.client.login(username=API_USER, password=API_USER_PASSWORD)
+        url_service_area_detail = reverse('providers:service_area_detail', kwargs={'pk': self.TEST_ID_1})
+        response = self.client.get(url_service_area_detail)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+    def test_service_area_delete_unauthenticated_DELETE_response_forbidden(self):
+        response = self.client.delete(self.url_service_area_delete)
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+
+    def test_service_area_delete_authenticated_DELETE_response_not_deleted_not_found(self):
+        self.client.login(username=API_USER, password=API_USER_PASSWORD)
+
+        url_service_area_delete = reverse('providers:service_area_delete', kwargs={'pk': INVALID_OBJECT_ID})
+        response = self.client.delete(url_service_area_delete)
+
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+
+    def test_service_area_delete_authenticated_DELETE_response_deleted_no_content(self):
+        self.client.login(username=API_USER, password=API_USER_PASSWORD)
+
+        url_service_area_delete = reverse('providers:service_area_delete', kwargs={'pk': self.TEST_ID_1})
+        response = self.client.delete(url_service_area_delete)
+
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+
+    def test_service_area_update_unauthenticated_PUT_response_forbidden(self):
+        response = self.client.put(self.url_service_area_update)
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+
+    def test_service_area_update_authenticated_PUT_invalidd_data_response_bad(self):
+        self.client.login(username=API_USER, password=API_USER_PASSWORD)
+        url_service_area_update = reverse('providers:service_area_update', kwargs={'pk': self.TEST_ID_1})
+        service_area_data = json.dumps(self.invalid_service_area_data)
+        response = self.client.put(
+            url_service_area_update,
+            data=service_area_data,
+            content_type='application/json'
+        )
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+    def test_service_area_update_authenticated_PUT_valid_data_response_updated_no_content(self):
+        self.client.login(username=API_USER, password=API_USER_PASSWORD)
+        url_service_area_update = reverse('providers:service_area_update', kwargs={'pk': self.TEST_ID_1})
+        service_area_data = json.dumps(self.valid_service_area_data_2)
+        response = self.client.put(
+            url_service_area_update,
+            data=service_area_data,
+            content_type='application/json'
+        )
+
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+
+    def test_service_area_create_unauthenticated_POST_response_forbidden(self):
+        response = self.client.post(self.url_service_area_create)
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+
+    def test_service_area_create_authenticated_POST_invalid_data_response_bad(self):
+        self.client.login(username=API_USER, password=API_USER_PASSWORD)
+        url_service_area_create = reverse('providers:service_area_create')
+        service_area_data = json.dumps(self.invalid_service_area_data)
+        response = self.client.post(
+            url_service_area_create,
+            data=service_area_data,
+            content_type='application/json'
+        )
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+    def test_service_area_create_authenticated_POST_valid_data_response_created(self):
+        self.client.login(username=API_USER, password=API_USER_PASSWORD)
+        url_service_area_create = reverse('providers:service_area_create')
+        service_area_data = json.dumps(self.valid_service_area_data)
+
+        response = self.client.post(
+            url_service_area_create,
+            data=service_area_data,
+            content_type='application/json',
+        )
+
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
 
 class TestServiceAreaListView(TestServiceAreaBase):
