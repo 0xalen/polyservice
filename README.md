@@ -30,5 +30,9 @@ There are 2 links available to view the documentation:
 - /api/schema/swagger-ui
 - /api/schema/redoc
  
+To update the documentation you can run:
+```
+(venv) ~$ spectacular --file schema.yml
+```
 
 
