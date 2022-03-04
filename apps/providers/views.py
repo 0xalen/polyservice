@@ -174,7 +174,7 @@ class FindServiceAreasView(APIView):
         service_area_list_by_location = ServiceArea.objects.filter(
             polygon__contains=location
         ).order_by('provider')
-        
+
         serialized_service_area_list = ServiceAreaSerializer(service_area_list_by_location, many=True)
         return Response(serialized_service_area_list.data, status=status.HTTP_200_OK)
 

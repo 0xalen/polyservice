@@ -1,0 +1,604 @@
+openapi: 3.0.3
+info:
+  title: PolyService API
+  version: 1.0.0
+  description: API that allows providers to update geographic information about service
+    areas.
+paths:
+  /api/v1/provider/create:
+    get:
+      operationId: provider_create_retrieve
+      description: Get details from a particular provider.
+      tags:
+      - provider
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - tokenAuth: []
+      responses:
+        '200':
+          description: No response body
+    post:
+      operationId: provider_create_create
+      description: Class in charge of handling operations related particular instances
+        of the Provider model in the API.
+      tags:
+      - provider
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - tokenAuth: []
+      responses:
+        '200':
+          description: No response body
+    put:
+      operationId: provider_create_update
+      description: Update information about a particular provider.
+      tags:
+      - provider
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - tokenAuth: []
+      responses:
+        '200':
+          description: No response body
+    delete:
+      operationId: provider_create_destroy
+      description: Delete a provider.
+      tags:
+      - provider
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - tokenAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/v1/provider/delete/{id}:
+    get:
+      operationId: provider_delete_retrieve
+      description: Get details from a particular provider.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - provider
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - tokenAuth: []
+      responses:
+        '200':
+          description: No response body
+    post:
+      operationId: provider_delete_create
+      description: Class in charge of handling operations related particular instances
+        of the Provider model in the API.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - provider
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - tokenAuth: []
+      responses:
+        '200':
+          description: No response body
+    put:
+      operationId: provider_delete_update
+      description: Update information about a particular provider.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - provider
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - tokenAuth: []
+      responses:
+        '200':
+          description: No response body
+    delete:
+      operationId: provider_delete_destroy
+      description: Delete a provider.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - provider
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - tokenAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/v1/provider/detail/{id}:
+    get:
+      operationId: provider_detail_retrieve
+      description: Get details from a particular provider.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - provider
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - tokenAuth: []
+      responses:
+        '200':
+          description: No response body
+    post:
+      operationId: provider_detail_create
+      description: Class in charge of handling operations related particular instances
+        of the Provider model in the API.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - provider
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - tokenAuth: []
+      responses:
+        '200':
+          description: No response body
+    put:
+      operationId: provider_detail_update
+      description: Update information about a particular provider.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - provider
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - tokenAuth: []
+      responses:
+        '200':
+          description: No response body
+    delete:
+      operationId: provider_detail_destroy
+      description: Delete a provider.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - provider
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - tokenAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/v1/provider/list:
+    get:
+      operationId: provider_list_retrieve
+      description: Class in charge of handling operations related to group of instances
+        of the Provider model in the API.
+      tags:
+      - provider
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/provider/service_area/create:
+    get:
+      operationId: provider_service_area_create_retrieve
+      description: Get details from a particular service area.
+      tags:
+      - provider
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - tokenAuth: []
+      responses:
+        '200':
+          description: No response body
+    post:
+      operationId: provider_service_area_create_create
+      description: Class in charge of handling operations related particular instances
+        of the ServiceArea model in the API.
+      tags:
+      - provider
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - tokenAuth: []
+      responses:
+        '200':
+          description: No response body
+    put:
+      operationId: provider_service_area_create_update
+      description: Update information about a particular service area.
+      tags:
+      - provider
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - tokenAuth: []
+      responses:
+        '200':
+          description: No response body
+    delete:
+      operationId: provider_service_area_create_destroy
+      description: Delete a service area.
+      tags:
+      - provider
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - tokenAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/v1/provider/service_area/delete/{id}:
+    get:
+      operationId: provider_service_area_delete_retrieve
+      description: Get details from a particular service area.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - provider
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - tokenAuth: []
+      responses:
+        '200':
+          description: No response body
+    post:
+      operationId: provider_service_area_delete_create
+      description: Class in charge of handling operations related particular instances
+        of the ServiceArea model in the API.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - provider
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - tokenAuth: []
+      responses:
+        '200':
+          description: No response body
+    put:
+      operationId: provider_service_area_delete_update
+      description: Update information about a particular service area.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - provider
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - tokenAuth: []
+      responses:
+        '200':
+          description: No response body
+    delete:
+      operationId: provider_service_area_delete_destroy
+      description: Delete a service area.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - provider
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - tokenAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/v1/provider/service_area/detail/{id}:
+    get:
+      operationId: provider_service_area_detail_retrieve
+      description: Get details from a particular service area.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - provider
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - tokenAuth: []
+      responses:
+        '200':
+          description: No response body
+    post:
+      operationId: provider_service_area_detail_create
+      description: Class in charge of handling operations related particular instances
+        of the ServiceArea model in the API.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - provider
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - tokenAuth: []
+      responses:
+        '200':
+          description: No response body
+    put:
+      operationId: provider_service_area_detail_update
+      description: Update information about a particular service area.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - provider
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - tokenAuth: []
+      responses:
+        '200':
+          description: No response body
+    delete:
+      operationId: provider_service_area_detail_destroy
+      description: Delete a service area.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - provider
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - tokenAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/v1/provider/service_area/list:
+    get:
+      operationId: provider_service_area_list_retrieve
+      description: Class in charge of handling operations related to group of instances
+        of the ServiceArea model in the API.
+      tags:
+      - provider
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/provider/service_area/update/{id}:
+    get:
+      operationId: provider_service_area_update_retrieve
+      description: Get details from a particular service area.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - provider
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - tokenAuth: []
+      responses:
+        '200':
+          description: No response body
+    post:
+      operationId: provider_service_area_update_create
+      description: Class in charge of handling operations related particular instances
+        of the ServiceArea model in the API.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - provider
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - tokenAuth: []
+      responses:
+        '200':
+          description: No response body
+    put:
+      operationId: provider_service_area_update_update
+      description: Update information about a particular service area.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - provider
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - tokenAuth: []
+      responses:
+        '200':
+          description: No response body
+    delete:
+      operationId: provider_service_area_update_destroy
+      description: Delete a service area.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - provider
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - tokenAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/v1/provider/update/{id}:
+    get:
+      operationId: provider_update_retrieve
+      description: Get details from a particular provider.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - provider
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - tokenAuth: []
+      responses:
+        '200':
+          description: No response body
+    post:
+      operationId: provider_update_create
+      description: Class in charge of handling operations related particular instances
+        of the Provider model in the API.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - provider
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - tokenAuth: []
+      responses:
+        '200':
+          description: No response body
+    put:
+      operationId: provider_update_update
+      description: Update information about a particular provider.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - provider
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - tokenAuth: []
+      responses:
+        '200':
+          description: No response body
+    delete:
+      operationId: provider_update_destroy
+      description: Delete a provider.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - provider
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - tokenAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/v1/service_area/:
+    post:
+      operationId: service_area_create
+      description: Class in charge of handling queries of involving ServiceAreas in
+        the API.
+      tags:
+      - service_area
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      responses:
+        '200':
+          description: No response body
+components:
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: sessionid
+    tokenAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: Token-based authentication with required prefix "Token"
