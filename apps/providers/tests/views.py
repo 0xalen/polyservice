@@ -16,7 +16,6 @@ class TestProvidersBase(TestProvidersUrlsBase):
 
     @classmethod
     def setUpTestData(cls):
-        super().setUpTestData()
         cls.__setUpUsers()
 
     @classmethod
@@ -33,7 +32,7 @@ class TestProviderInformationView(TestProvidersBase):
     """
     Class for testing ProviderInformationView.
     Run:
-        python manage.py test apps.providers.tests.views.TestProviderInformationView
+        python manage.py test apps.providers.tests.views.TestProviderInformationView --keepdb
     """
 
     def setUp(self):
@@ -44,6 +43,7 @@ class TestProviderInformationView(TestProvidersBase):
             language=LANGUAGE_1,
             currency=CURRENCY_1,
         )
+        self.TEST_ID_1 = self.provider_1.id
         self.provider_2 = Provider.objects.create(
             name=PROVIDER_2,
             email=EMAIL_2,
@@ -51,15 +51,44 @@ class TestProviderInformationView(TestProvidersBase):
             language=LANGUAGE_2,
             currency=CURRENCY_1,
         )
+        self.TEST_ID_2 = self.provider_2.id
+        self.valid_provider_data = {
+            'name': "Valid provider",
+            'email': "valid@email.fake",
+            'phone': PHONE_NUMBER_1,
+            'language': LANGUAGE_1,
+            'currency': CURRENCY_1
+        }
+        self.invalid_provider_data = {
+            'name': None,
+            'email': "invalidemail.fake",
+            'phone': "1432432123A",
+            'language': 'en',
+            'currency': '$'
+        }
 
     def test_get_detail_unauthenticated_GET_response_forbidden(self):
         response = self.client.get(self.url_get_provider_detail)
+
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
 
     def test_get_detail_authenticated_GET_response_ok(self):
         self.client.login(username=API_USER, password=API_USER_PASSWORD)
+        url_get_provider_detail = reverse('providers:provider_detail', kwargs={'pk': self.TEST_ID_1})
+        response = self.client.get(url_get_provider_detail)
 
-        response = self.client.get(self.url_get_provider_detail)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+    def test_provider_delete_unauthenticated_DELETE_response_forbidden(self):
+        response = self.client.delete(self.url_delete_provider)
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+
+    def test_provider_delete_authenticated_DELETE_response_ok(self):
+        self.client.login(username=API_USER, password=API_USER_PASSWORD)
+
+        url_delete_provider = reverse('providers:provider_delete', kwargs={'pk': self.TEST_ID_1})
+        response = self.client.delete(url_delete_provider)
+
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
     def test_provider_update_unauthenticated_PUT_response_forbidden(self):
@@ -68,17 +97,8 @@ class TestProviderInformationView(TestProvidersBase):
 
     def test_provider_update_authenticated_PUT_response_ok(self):
         self.client.login(username=API_USER, password=API_USER_PASSWORD)
-        response = self.client.get(self.url_update_provider_information)
-
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-
-    def test_provider_insertion_unauthenticated_DELETE_response_forbidden(self):
-        response = self.client.delete(self.url_delete_provider)
-        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
-
-    def test_provider_insertion_authenticated_DELETE_response_ok(self):
-        self.client.login(username=API_USER, password=API_USER_PASSWORD)
-        response = self.client.delete(self.url_delete_provider)
+        url_update_provider_information = reverse('providers:provider_update', kwargs={'pk': self.TEST_ID_1})
+        response = self.client.get(url_update_provider_information)
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
@@ -86,11 +106,30 @@ class TestProviderInformationView(TestProvidersBase):
         response = self.client.post(self.url_create_provider)
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
 
-    def test_provider_creation_authenticated_POST_response_ok(self):
+    def test_provider_creation_authenticated_POST_invalid_data_response_bad(self):
         self.client.login(username=API_USER, password=API_USER_PASSWORD)
-        response = self.client.post(self.url_create_provider)
+        url_create_provider = reverse('providers:provider_creation')
+        provider_data = json.dumps(self.invalid_provider_data)
+        response = self.client.post(
+            url_create_provider,
+            data=provider_data,
+            content_type='application/json'
+        )
 
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+    def test_provider_creation_authenticated_POST_valid_data_response_created(self):
+        self.client.login(username=API_USER, password=API_USER_PASSWORD)
+        url_create_provider = reverse('providers:provider_creation')
+        provider_data = json.dumps(self.valid_provider_data)
+
+        response = self.client.post(
+            url_create_provider,
+            data=provider_data,
+            content_type='application/json',
+        )
+
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
 
 class TestProviderListView(TestProvidersBase):
@@ -120,7 +159,6 @@ class TestProviderListView(TestProvidersBase):
         provider_list = Provider.objects.all()
         provider_serializer = ProviderSerializer(provider_list, many=True)
         response = self.client.get(self.url_get_provider_list)
-        print(f"DBG -> response: {response}")
 
         self.assertEqual(response.data, provider_serializer.data)
 

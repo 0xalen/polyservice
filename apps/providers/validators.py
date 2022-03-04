@@ -20,7 +20,7 @@ ALPHANUMERIC_EXTENDED = RegexValidator(
 
 
 phone_regex = RegexValidator(
-    r'^\+?1?\{9-15}$',
+    r'^(\+\d{9,15})$',
     'Phone number should include country code and should have a length between 9 and 15 characters'
 )
 

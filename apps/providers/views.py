@@ -25,9 +25,11 @@ class ProviderInformationView(APIView):
         except Provider.DoesNotExist:
             return Response(status=status.HTTP_404_NOT_FOUND)
 
-        return Response({})
+        serialized_provider = ProviderSerializer(provider)
+        provider_detail_data = serialized_provider.data
+        return Response(provider_detail_data)
 
-    def delete(self, pk: int):
+    def delete(self, request, pk: int):
         """
         Delete a provider.
         """
@@ -38,7 +40,7 @@ class ProviderInformationView(APIView):
 
         return Response({})
 
-    def put(self, pk: int):
+    def put(self, request, pk: int):
         """
         Update information about a particular provider.
         """
@@ -47,15 +49,23 @@ class ProviderInformationView(APIView):
         except Provider.DoesNotExist:
             return Response(status=status.HTTP_404_NOT_FOUND)
 
-        return Response({})
-
-    def post(self, pk: int):
         try:
-            provider = Provider.objects.get(pk=pk)
+            provider_data = request.PUT.get('data')
+            serialized_provider = ProviderSerializer(provider_data)
         except Provider.DoesNotExist:
-            return Response(status=status.HTTP_404_NOT_FOUND)
+            return Response(status=status.HTTP_400_BAD_REQUEST)
 
+        provider.updated_at()
         return Response({})
+
+    def post(self, request):
+        provider_data = request.data
+        serialized_provider = ProviderSerializer(data=provider_data)
+        if not serialized_provider.is_valid():
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+
+        serialized_provider.save()
+        return Response(status=status.HTTP_201_CREATED)
 
 
 class ProviderListView(APIView):
@@ -70,5 +80,7 @@ class ProviderListView(APIView):
         if not provider_list.exists():
             return Response(status=status.HTTP_404_NOT_FOUND)
 
-        return Response({})
+        serialized_provider_list = ProviderSerializer(provider_list, many=True)
+        provider_list_data = serialized_provider_list.data
+        return Response(provider_list_data)
 

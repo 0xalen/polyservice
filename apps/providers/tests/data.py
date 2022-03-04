@@ -13,7 +13,7 @@ PROVIDER_1 = "Provider 1"
 PROVIDER_2 = "Provider 2"
 CURRENCY_1 = "USD"
 CURRENCY_2 = "EUR"
-LANGUAGE_1 = "en-us"
+LANGUAGE_1 = "en"
 LANGUAGE_2 = "en-gb"
 EMAIL_1 = "provider1@email.fake"
 EMAIL_2 = "provider2@email.fake"
@@ -39,7 +39,7 @@ class TestProvidersUrlsBase(TestCase):
         super().setUpClass()
         cls.url_get_provider_detail = reverse('providers:provider_detail', kwargs={'pk': ID_1})
         cls.url_update_provider_information = reverse('providers:provider_update', kwargs={'pk': ID_1})
-        cls.url_delete_provider = reverse('providers:provider_insertion', kwargs={'pk': ID_1})
-        cls.url_create_provider = reverse('providers:provider_creation', kwargs={'pk': ID_1})
+        cls.url_delete_provider = reverse('providers:provider_delete', kwargs={'pk': ID_1})
+        cls.url_create_provider = reverse('providers:provider_creation')
         cls.url_get_provider_list = reverse('providers:provider_list')
 
