@@ -4,5 +4,5 @@ psycopg2-binary==2.9.3
 django-money==2.1.1
 postgis==1.0.4
 djangorestframework-gis==0.18
-simplejson=3.17.6
+simplejson==3.17.6
 drf-spectacular==0.21.2
